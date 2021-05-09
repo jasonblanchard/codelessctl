@@ -26,7 +26,7 @@ import (
 // readCmd represents the read command
 var readCmd = &cobra.Command{
 	Use:   "read",
-	Short: "A brief description of your command",
+	Short: "Read a single story at stdout",
 	Long: `For a more enjoyably readin experience, pipe it to less:
 
 	codelessctl read 42 | less
