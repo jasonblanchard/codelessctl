@@ -31,14 +31,20 @@ var readCmd = &cobra.Command{
 
 	codelessctl read 42 | less
 `,
-	Args: cobra.ExactArgs(1),
+	// Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cString := args[0]
+		var c int
+		var err error
 
-		c, err := strconv.Atoi(cString)
+		if len(args) == 0 {
+			c = 1
+		} else {
+			cString := args[0]
+			c, err = strconv.Atoi(cString)
 
-		if err != nil {
-			return err
+			if err != nil {
+				return err
+			}
 		}
 
 		story := codeless.GetStoryById(c)
