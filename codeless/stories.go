@@ -1,13 +1,16 @@
 package codeless
 
 import (
+	_ "embed"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"sort"
 	"strconv"
 	"strings"
 )
+
+//go:embed stories.json
+var storiesJson string
 
 type Story struct {
 	CaseNumber string
@@ -20,13 +23,7 @@ var storiesById map[int]Story
 var storyIds []int
 
 func init() {
-	file, err := ioutil.ReadFile("stories.json")
-
-	if err != nil {
-		panic(err)
-	}
-
-	err = json.Unmarshal(file, &stories)
+	err := json.Unmarshal([]byte(storiesJson), &stories)
 
 	if err != nil {
 		panic(err)
