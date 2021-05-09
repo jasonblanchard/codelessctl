@@ -1,4 +1,4 @@
-module github.com/jasonblanchard/codeless-cli
+module github.com/jasonblanchard/thecodelessctl
 
 go 1.16
 

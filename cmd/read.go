@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/jasonblanchard/codeless-cli/codeless"
+	"github.com/jasonblanchard/thecodelessctl/codeless"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +29,7 @@ var readCmd = &cobra.Command{
 	Short: "Read a single story at stdout",
 	Long: `For a more enjoyably readin experience, pipe it to less:
 
-	codelessctl read 42 | less
+	thecodelessctl read 42 | less
 `,
 	// Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {

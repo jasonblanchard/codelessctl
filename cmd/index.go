@@ -20,7 +20,7 @@ import (
 	"os"
 	"text/tabwriter"
 
-	"github.com/jasonblanchard/codeless-cli/codeless"
+	"github.com/jasonblanchard/thecodelessctl/codeless"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +30,7 @@ var indexCmd = &cobra.Command{
 	Short: "List all stories and case numbers",
 	Long: `For a more enjoyably readin experience, pipe it to less:
 
-	codelessctl index | less
+	thecodelessctl index | less
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		stories := codeless.GetAllStories()

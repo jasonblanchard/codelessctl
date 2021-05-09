@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/jasonblanchard/codeless-cli/cmd"
+import "github.com/jasonblanchard/thecodelessctl/cmd"
 
 func main() {
 	cmd.Execute()
