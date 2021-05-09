@@ -27,12 +27,10 @@ import (
 var readCmd = &cobra.Command{
 	Use:   "read",
 	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Long: `For a more enjoyably readin experience, pipe it to less:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	codelessctl read 42 | less
+`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cString := args[0]
@@ -44,7 +42,7 @@ to quickly create a Cobra application.`,
 		}
 
 		story := codeless.GetStoryById(c)
-		fmt.Println(story.Text)
+		fmt.Println(codeless.DecorateStory(story))
 		return nil
 	},
 }

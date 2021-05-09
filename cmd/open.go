@@ -17,45 +17,47 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"text/tabwriter"
+	"os/exec"
+	"strconv"
 
-	"github.com/jasonblanchard/codeless-cli/codeless"
 	"github.com/spf13/cobra"
 )
 
-// indexCmd represents the index command
-var indexCmd = &cobra.Command{
-	Use:   "index",
-	Short: "List all stories and case numbers",
-	Long: `For a more enjoyably readin experience, pipe it to less:
+// openCmd represents the open command
+var openCmd = &cobra.Command{
+	Use:   "open",
+	Short: "Open story in the browser at http://thecodelesscode.com",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cString := args[0]
 
-	codelessctl index | less
-`,
-	Run: func(cmd *cobra.Command, args []string) {
-		stories := codeless.GetAllStories()
-		w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+		c, err := strconv.Atoi(cString)
 
-		for i := 0; i < len(stories); i++ {
-			story := stories[i]
-			row := fmt.Sprintf("%s\t%s\t", story.CaseNumber, story.Title)
-			fmt.Fprintln(w, row)
+		if err != nil {
+			return err
 		}
 
-		w.Flush()
+		url := fmt.Sprintf("http://thecodelesscode.com/case/%v", c)
+
+		err = exec.Command("open", url).Start()
+		if err != nil {
+			return err
+		}
+
+		return nil
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(indexCmd)
+	rootCmd.AddCommand(openCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// indexCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// openCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// indexCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// openCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

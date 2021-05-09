@@ -9,14 +9,14 @@ import (
 	"strings"
 )
 
-type story struct {
+type Story struct {
 	CaseNumber string
 	Title      string
 	Text       string
 }
 
-var stories []story
-var storiesById map[int]story
+var stories []Story
+var storiesById map[int]Story
 var storyIds []int
 
 func init() {
@@ -32,7 +32,7 @@ func init() {
 		panic(err)
 	}
 
-	storiesById = make(map[int]story)
+	storiesById = make(map[int]Story)
 
 	for i := 0; i < len(stories); i++ {
 		if stories[i].CaseNumber == "" {
@@ -51,12 +51,16 @@ func init() {
 	sort.Ints(storyIds)
 }
 
-func GetStoryById(id int) story {
+func GetStoryById(id int) Story {
 	return storiesById[id]
 }
 
-func GetAllStories() []story {
-	var sortedStories []story
+func DecorateStory(story Story) string {
+	return fmt.Sprintf("# %s: %s\n\n%s", story.CaseNumber, story.Title, story.Text)
+}
+
+func GetAllStories() []Story {
+	var sortedStories []Story
 
 	for i := 0; i < len(storyIds); i++ {
 		story := storiesById[i]
