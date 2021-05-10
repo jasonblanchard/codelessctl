@@ -24,18 +24,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// readCmd represents the read command
-var readCmd = &cobra.Command{
-	Use:   "read",
-	Short: "Read a single story at stdout",
-	Long: `For a more enjoyably readin experience, pipe it to less:
+// nextCmd represents the next command
+var nextCmd = &cobra.Command{
+	Use:   "next",
+	Short: "Read the next story",
+	Long: `Reads the bookmark in your config file, finds the next story, then displays it and sets that as your current bookmark.
 
-	thecodelessctl read 42 | less
-`,
+You can page through each story by running this command multiple times.
+	`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var id int
 		var err error
-		bookmark, err := cmd.Flags().GetBool("bookmark")
 		config, err := cmd.Flags().GetString("config")
 
 		if err != nil {
@@ -53,30 +52,26 @@ var readCmd = &cobra.Command{
 			}
 		}
 
-		if bookmark == true {
-			err := store.WriteBookmark(config, id)
-			if err != nil {
-				return err
-			}
-		}
+		nextStoryId := codeless.GetNextStoryId(id)
+		store.WriteBookmark(config, nextStoryId)
 
-		story := codeless.GetStoryById(id)
+		story := codeless.GetStoryById(nextStoryId)
 		fmt.Println(codeless.DecorateStory(story))
+
 		return nil
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(readCmd)
+	rootCmd.AddCommand(nextCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// readCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// nextCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// readCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	readCmd.Flags().BoolP("bookmark", "b", false, "Set bookmark value to this story")
+	// nextCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

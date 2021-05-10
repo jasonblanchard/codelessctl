@@ -19,64 +19,45 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/jasonblanchard/thecodelessctl/codeless"
 	"github.com/jasonblanchard/thecodelessctl/store"
 	"github.com/spf13/cobra"
 )
 
-// readCmd represents the read command
-var readCmd = &cobra.Command{
-	Use:   "read",
-	Short: "Read a single story at stdout",
-	Long: `For a more enjoyably readin experience, pipe it to less:
+// setBookmarkCmd represents the setBookmark command
+var setBookmarkCmd = &cobra.Command{
+	Use:   "set",
+	Short: "Set current bookmark value",
+	Args:  cobra.ExactArgs(1),
+	Long: `Set the bookmark in your config to story 42:
 
-	thecodelessctl read 42 | less
+	thecodelessctl bookmark set 42
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var id int
-		var err error
-		bookmark, err := cmd.Flags().GetBool("bookmark")
 		config, err := cmd.Flags().GetString("config")
+		idString := args[0]
+		id, err := strconv.Atoi(idString)
+		err = store.WriteBookmark(config, id)
 
 		if err != nil {
 			return err
 		}
 
-		if len(args) == 0 {
-			id = store.GetBookmark()
-		} else {
-			idString := args[0]
-			id, err = strconv.Atoi(idString)
+		fmt.Println(fmt.Sprintf("Bookmark set to %v in %v", id, config))
 
-			if err != nil {
-				return err
-			}
-		}
-
-		if bookmark == true {
-			err := store.WriteBookmark(config, id)
-			if err != nil {
-				return err
-			}
-		}
-
-		story := codeless.GetStoryById(id)
-		fmt.Println(codeless.DecorateStory(story))
 		return nil
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(readCmd)
+	bookmarkCmd.AddCommand(setBookmarkCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// readCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// setBookmarkCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// readCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	readCmd.Flags().BoolP("bookmark", "b", false, "Set bookmark value to this story")
+	// setBookmarkCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

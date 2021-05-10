@@ -13,6 +13,7 @@ import (
 var storiesJson string
 
 type Story struct {
+	Id         int
 	CaseNumber string
 	Title      string
 	Text       string
@@ -42,6 +43,7 @@ func init() {
 			fmt.Println(err)
 		}
 		storyIds = append(storyIds, id)
+		stories[i].Id = id
 		storiesById[id] = stories[i]
 	}
 
@@ -68,4 +70,20 @@ func GetAllStories() []Story {
 	}
 
 	return sortedStories
+}
+
+func GetNextStoryId(id int) int {
+	currentIndex := findIntIndex(id, storyIds)
+	nextIndex := currentIndex + 1
+	nextStoryId := storyIds[nextIndex]
+	return storiesById[nextStoryId].Id
+}
+
+func findIntIndex(value int, list []int) int {
+	for i, v := range list {
+		if v == value {
+			return i
+		}
+	}
+	return -1
 }
