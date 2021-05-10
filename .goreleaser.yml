@@ -30,7 +30,7 @@ changelog:
       - '^test:'
 brews:
   - name: thecodelessctl
-    github:
+    tap:
       owner: jasonblanchard
       name: homebrew-thecodelessctl
     url_template: "https://github.com/jasonblanchard/thecodelessctl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
