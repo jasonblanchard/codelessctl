@@ -4,9 +4,9 @@ before:
     - go generate ./...
 builds:
   - env:
-      - CGO_ENABLED=0
-      ldflags:
-        - -X github.com/jasonblanchard/thecodelessctl/cmd.Version={{.Version}}
+    - CGO_ENABLED=0
+    ldflags:
+      - -X github.com/jasonblanchard/thecodelessctl/cmd.Version={{.Version}}
     goos:
       - linux
       - windows
