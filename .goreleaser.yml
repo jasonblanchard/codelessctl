@@ -28,10 +28,10 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-# brews:
-#   - name: thecodelessctl
-#     github:
-#       owner: jasonblanchard
-#       name: homebrew-thecodelessctl
-#     url_template: "https://github.com/jasonblanchard/thecodelessctl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-#     folder: Formula
+brews:
+  - name: thecodelessctl
+    github:
+      owner: jasonblanchard
+      name: homebrew-thecodelessctl
+    url_template: "https://github.com/jasonblanchard/thecodelessctl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    folder: Formula
