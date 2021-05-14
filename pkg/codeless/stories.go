@@ -4,9 +4,11 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 //go:embed stories.json
@@ -50,11 +52,12 @@ func init() {
 	sort.Ints(storyIds)
 }
 
-func GetStoryById(id int) Story {
-	return storiesById[id]
+func GetStoryById(id int) *Story {
+	story := storiesById[id]
+	return &story
 }
 
-func DecorateStory(story Story) string {
+func DecorateStory(story *Story) string {
 	return fmt.Sprintf("# %s: %s\n\n%s", story.CaseNumber, story.Title, story.Text)
 }
 
@@ -77,6 +80,15 @@ func GetNextStoryId(id int) int {
 	nextIndex := currentIndex + 1
 	nextStoryId := storyIds[nextIndex]
 	return storiesById[nextStoryId].Id
+}
+
+func GetRandomStory() *Story {
+	rand.Seed(time.Now().UnixNano())
+	max := len(storyIds)
+	id := rand.Intn(max)
+	story := GetStoryById(id)
+
+	return story
 }
 
 func findIntIndex(value int, list []int) int {
